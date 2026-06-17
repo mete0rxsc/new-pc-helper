@@ -70,6 +70,6 @@ pyinstaller --onefile --windowed --name Mete0rNewPcHelper --add-data "app-list.j
 
 ## 开源地址
 
-GitHub: https://github.com/Mete0r/new-pc-helper
+GitHub: https://github.com/mete0rxsc/new-pc-helper
 
 ©2026.Mete0r all right reserved.
