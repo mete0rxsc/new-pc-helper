@@ -1,0 +1,14 @@
+apps/
+__pycache__/
+build/
+dist/
+
+
+
+新电脑.code-workspace
+软件安装程序静默参数识别工具v1.1.exe
+Mete0rNewPcHelper.spec
+Mete0rNewPcAppHelper.spec
+app-list.txt
+app - 副本.py
+app - 副本 (2).py

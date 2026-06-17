@@ -1,0 +1,130 @@
+[
+    {
+        "name": "Steam",
+        "URL": "https://media.st.dl.eccdnx.com/client/installer/SteamSetup.exe",
+        "unzip": false,
+        "install-command": "/S /NCRC"
+    },
+    {
+        "name": "Epic Games Launcher",
+        "URL": "https://epicgames-download1.akamaized.net/Builds/UnrealEngineLauncher/Installers/Windows/EpicInstaller-20.1.0.exe?launcherfilename=EpicInstaller-20.1.0.exe",
+        "unzip": false,
+        "install-command": "/S"
+    },
+    {
+        "name": "WeChat",
+        "URL": "https://dldir1.qq.com/weixin/Universal/Windows/WeChatWin_4.1.10.exe",
+        "unzip": false,
+        "install-command": "/S /NCRC"
+    },
+    {
+        "name": "Oopz",
+        "URL": "https://downloadcdn.oopz.cn/release/141/oopz_setup_v1.4.1.1.exe",
+        "unzip": false,
+        "install-command": "/S /NCRC"
+    },
+    {
+        "name": "ToDesk",
+        "URL": "https://dl.todesk.com/irrigation/ToDesk_4.9.7.1.exe",
+        "unzip": false,
+        "install-command": "/S /NCRC"
+    },
+    {
+        "name": "Kook",
+        "URL": "https://dl.kookapp.cn/assets/release/html_pc/kook_2779/Kook_PC_Setup_v0.107.1.0_b2ZmaWNpYWwuc2l0ZS4uLi5wYw==.exe?auth_key=1781539821-e065ce4ab2fa51b70134c39c36f41789-10h3n8uz0-24f87bc2fcdbf543d29225db2169aa75",
+        "unzip": false,
+        "install-command": "/S"
+    },
+    {
+        "name": "GeekUninstaller",
+        "URL": "https://geekuninstaller.com/geek.zip",
+        "unzip": true
+    },
+    {
+        "name": "7-Zip",
+        "URL": "https://v4.gh-proxy.org/https://github.com/ip7z/7zip/releases/download/26.01/7z2601-x64.exe",
+        "unzip": false,
+        "install-command": "/S"
+    },
+    {
+        "name": "图吧工具箱",
+        "URL": "https://apac.tualatin.club/%E5%9B%BE%E5%90%A7%E5%B7%A5%E5%85%B7%E7%AE%B1202601.1%E5%AE%89%E8%A3%85%E5%8C%85.exe",
+        "unzip": false,
+        "install-command": "/VERYSILENT /SUPPRESSMSGBOXES /NORESTART"
+    },
+    {
+        "name": "QQ音乐",
+        "URL": "https://dldir.y.qq.com/ecosfile/music_clntupate/pc/other/QQMusic_Setup_2228.exe?sign=1781539964-61v9Oqgv0rsi5oUj-0-ae50a6579abd3cfe95b41f7c127da61a",
+        "unzip": false,
+        "install-command": "/S"
+    },
+    {
+        "name": "网易云音乐",
+        "URL": "https://d8.music.126.net/dmusic2/NeteaseCloudMusic_Music_official_3.1.35.205293_64.exe",
+        "unzip": false,
+        "install-command": "/S /NCRC"
+    },
+    {
+        "name": "Battle.net",
+        "URL": "https://downloader.battlenet.com.cn/download/installer/win/1.0.66/Battle.net-Setup-CN.exe",
+        "unzip": false,
+        "install-command": "/S"
+    },
+    {
+        "name": "SteamTools",
+        "URL": "https://v4.gh-proxy.org/https://github.com/BeyondDimension/SteamTools/releases/download/3.1.0/Steam++_v3.1.0_win_x64.exe",
+        "unzip": false,
+        "install-command": "/S /NCRC"
+    },
+    {
+        "name": "UU加速器",
+        "URL": "https://uu.gdl.netease.com/5223/UU-6.9.2.exe?key1=32ff19b0a85e8a7346e7073cbbfee28d&key2=6a30cda1",
+        "unzip": false,
+        "install-command": "/S"
+    },
+    {
+        "name": "QQ",
+        "URL": "https://qqdl.gtimg.cn/qqfile/QQNT/9.9.31/release/092069d7/QQ_9.9.31_260528_x64_01.exe",
+        "unzip": false,
+        "install-command": "/S"
+    },
+    {
+        "name": "火绒安全",
+        "phpURL": "https://www.huorong.cn/product/versionShow60.php",
+        "unzip": false,
+        "install-command": "MANUAL_INSTALL_REQUIRED",
+        "note": "不支持静默安装，下载后请手动安装"
+    },
+    {
+        "name": "Google Chrome",
+        "URL": "https://dl.google.com/tag/s/appguid%3D%7B8A69D345-D564-463C-AFF1-A69D9E530F96%7D%26iid%3D%7B60D513C6-17C4-7970-CFCC-6C7C545D8296%7D%26lang%3Dzh-CN%26browser%3D4%26usagestats%3D1%26appname%3DGoogle%2520Chrome%26needsadmin%3Dprefers%26ap%3D-arch_x64-statsdef_1%26installdataindex%3Dempty/update2/installers/ChromeSetup.exe",
+        "unzip": false,
+        "install-command": "/S"
+    },
+    {
+        "name": "游戏加加",
+        "URL": "https://dl.gamepp.com/global/GamePP_International.exe",
+        "unzip": false,
+        "install-command": "/S"
+    },
+    {
+        "name": "OBS Studio",
+        "URL": "https://cdn-fastly.obsproject.com/downloads/OBS-Studio-32.1.2-Windows-x64-Installer.exe",
+        "unzip": false,
+        "install-command": "/S /NCRC"
+    },
+    {
+        "name": "Java21(建议搭配MC食用)",
+        "URL": "https://download.oracle.com/java/21/latest/jdk-21_windows-x64_bin.msi",
+        "unzip": false,
+        "install-command": "/qn /norestart"
+    },
+    {
+        "name": "PCL2-CE",
+        "URL": "https://v4.gh-proxy.org/https://github.com/PCL-Community/PCL-CE/releases/download/v2.14.6/PCL2_CE_Release_x64.exe",
+        "unzip": false,
+        "install-command": "",
+        "portable": true,
+        "note": "绿色单文件，自动部署并创建快捷方式"
+    }
+]
