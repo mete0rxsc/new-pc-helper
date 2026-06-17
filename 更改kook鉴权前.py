@@ -10,11 +10,9 @@ import tempfile
 import time
 import urllib.parse
 import urllib.request
-import urllib.error
 import zipfile
 from dataclasses import dataclass
 from pathlib import Path
-from html.parser import HTMLParser
 
 from PySide6.QtCore import QEasingCurve, QObject, QRunnable, QThreadPool, QTimer, Qt, Signal, Slot, QPropertyAnimation, QUrl
 from PySide6.QtGui import QColor, QDesktopServices, QFont, QPainter, QPen
@@ -75,10 +73,9 @@ EMBEDDED_APP_LIST = [
     },
     {
         "name": "Kook",
-        "URL": "https://www.kookapp.cn/api/v2/updates/latest-version?platform=windows&source=1",
+        "URL": "https://dl.kookapp.cn/assets/release/html_pc/kook_2779/Kook_PC_Setup_v0.107.1.0_b2ZmaWNpYWwuc2l0ZS4uLi5wYw==.exe?auth_key=1781539821-e065ce4ab2fa51b70134c39c36f41789-10h3n8uz0-24f87bc2fcdbf543d29225db2169aa75",
         "unzip": False,
         "install-command": "/S",
-        "is_api": True,
     },
     {
         "name": "GeekUninstaller",
@@ -99,10 +96,9 @@ EMBEDDED_APP_LIST = [
     },
     {
         "name": "QQ音乐",
-        "URL": "https://y.qq.com/download/",
+        "URL": "https://dldir.y.qq.com/ecosfile/music_clntupate/pc/other/QQMusic_Setup_2228.exe?sign=1781539964-61v9Oqgv0rsi5oUj-0-ae50a6579abd3cfe95b41f7c127da61a",
         "unzip": False,
         "install-command": "/S",
-        "is_html_parse": True,
     },
     {
         "name": "网易云音乐",
@@ -124,10 +120,9 @@ EMBEDDED_APP_LIST = [
     },
     {
         "name": "UU加速器",
-        "URL": "https://adl.netease.com/d/g/uu/c/gw/js",
+        "URL": "https://uu.gdl.netease.com/5223/UU-6.9.2.exe?key1=32ff19b0a85e8a7346e7073cbbfee28d&key2=6a30cda1",
         "unzip": False,
         "install-command": "/S",
-        "is_js_parse": True,
     },
     {
         "name": "QQ",
@@ -185,9 +180,6 @@ class AppItem:
     install_command: str = ""
     note: str = ""
     portable: bool = False
-    is_api: bool = False
-    is_html_parse: bool = False
-    is_js_parse: bool = False
 
 
 class AnimatedButton(QPushButton):
@@ -917,154 +909,6 @@ def app_list_candidates() -> list[Path]:
     return candidates
 
 
-def get_kook_latest_url() -> str:
-    """
-    从 Kook 官方 API 获取最新版本下载链接
-    """
-    url = "https://www.kookapp.cn/api/v2/updates/latest-version?platform=windows&source=1"
-    try:
-        req = urllib.request.Request(
-            url, headers={"User-Agent": "Mete0rNewPcHelper/0.2"})
-        with urllib.request.urlopen(req, timeout=10) as resp:
-            data = json.loads(resp.read().decode('utf-8'))
-            if data.get("url"):
-                return data["url"]
-    except Exception as e:
-        print(f"[Error] 获取 Kook 版本失败: {e}")
-    return ""
-
-
-def get_qq_music_latest_url() -> str:
-    """
-    从 QQ 音乐下载页面获取最新的真实下载链接（自动跟随重定向）
-    """
-    url = "https://y.qq.com/download/"
-    try:
-        # 第一步：获取页面，提取 file_redirect 链接
-        req = urllib.request.Request(
-            url, headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"})
-        with urllib.request.urlopen(req, timeout=15) as resp:
-            html_content = resp.read().decode('utf-8')
-
-            # 查找 PC 版本的下载链接（data-type="1" 是 PC 版）
-            # 优先找 data-type="1" 的链接
-            pc_link_match = re.search(
-                r'<a[^>]*data-type="1"[^>]*href="([^"]+)"',
-                html_content,
-                re.IGNORECASE
-            )
-            if not pc_link_match:
-                # 备用：找任意 .exe 链接
-                pc_link_match = re.search(
-                    r'href="([^"]*file_redirect[^"]*\.exe[^"]*)"',
-                    html_content,
-                    re.IGNORECASE
-                )
-            if not pc_link_match:
-                # 再备用：找任意 .exe 链接
-                pc_link_match = re.search(
-                    r'href="([^"]*\.exe[^"]*)"',
-                    html_content,
-                    re.IGNORECASE
-                )
-
-            if not pc_link_match:
-                print("[Error] 未在 QQ 音乐页面找到下载链接")
-                return ""
-
-            raw_url = pc_link_match.group(1)
-            # 处理相对路径
-            if raw_url.startswith('//'):
-                raw_url = 'https:' + raw_url
-            elif raw_url.startswith('/'):
-                raw_url = 'https://y.qq.com' + raw_url
-            elif not raw_url.startswith('http'):
-                raw_url = 'https://y.qq.com/' + raw_url
-
-            print(f"[Info] QQ 音乐原始链接: {raw_url}")
-
-            # 第二步：跟随重定向，获取真实下载链接
-            final_url = follow_redirects(raw_url)
-            if final_url:
-                print(f"[Info] QQ 音乐真实下载链接: {final_url}")
-                return final_url
-            else:
-                return raw_url
-
-    except Exception as e:
-        print(f"[Error] 获取 QQ 音乐版本失败: {e}")
-        import traceback
-        traceback.print_exc()
-    return ""
-
-
-def follow_redirects(url: str, max_redirects: int = 5) -> str:
-    """
-    跟随所有重定向，返回最终 URL
-    """
-    current_url = url
-    for _ in range(max_redirects):
-        try:
-            req = urllib.request.Request(
-                current_url,
-                headers={
-                    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"},
-                method='HEAD'  # 只获取响应头，不下载内容
-            )
-            with urllib.request.urlopen(req, timeout=15) as resp:
-                final_url = resp.geturl()
-                if final_url == current_url:
-                    # 没有重定向，返回当前 URL
-                    return final_url
-                current_url = final_url
-        except urllib.error.HTTPError as e:
-            # 某些服务器不支持 HEAD，改用 GET 但只读 headers
-            try:
-                req = urllib.request.Request(
-                    current_url,
-                    headers={
-                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
-                )
-                with urllib.request.urlopen(req, timeout=15) as resp:
-                    final_url = resp.geturl()
-                    if final_url == current_url:
-                        return final_url
-                    current_url = final_url
-            except Exception as e2:
-                print(f"[Error] 跟随重定向失败: {e2}")
-                return current_url
-        except Exception as e:
-            print(f"[Error] 跟随重定向失败: {e}")
-            return current_url
-
-    return current_url
-
-
-def get_uu_accelerator_latest_url() -> str:
-    """
-    从 UU 加速器的 JS 接口获取最新版本链接
-    """
-    url = "https://adl.netease.com/d/g/uu/c/gw/js"
-    try:
-        req = urllib.request.Request(
-            url, headers={"User-Agent": "Mozilla/5.0"})
-        with urllib.request.urlopen(req, timeout=10) as resp:
-            js_content = resp.read().decode('utf-8')
-            # 从 JS 中提取 pc_link 变量
-            pc_link_match = re.search(
-                r'var\s+pc_link\s*=\s*["\']([^"\']+)["\']', js_content)
-            if pc_link_match:
-                return pc_link_match.group(1)
-            # 备用方案：查找任何包含 .exe 的链接
-            exe_match = re.search(
-                r'["\']([^"\']*uu.*?\.exe[^"\']*)["\']', js_content)
-            if exe_match:
-                return exe_match.group(1)
-    except Exception as e:
-        print(f"[Error] 获取 UU 加速器版本失败: {e}")
-    return ""
-
-
 def get_huorong_latest_url() -> str:
     """
     从火绒官方接口获取最新 x64 版本下载链接
@@ -1095,25 +939,14 @@ def load_apps() -> list[AppItem]:
         except Exception:
             break
 
-    # 获取动态 URL
     huorong_url = get_huorong_latest_url()
-    kook_url = get_kook_latest_url()
-    qq_music_url = get_qq_music_latest_url()
-    uu_url = get_uu_accelerator_latest_url()
 
     apps = []
     for raw in raw_apps:
         name = str(raw.get("name", "")).strip()
         url = str(raw.get("URL") or raw.get("url") or "").strip()
 
-        # 使用动态获取的 URL
-        if name == "Kook" and kook_url:
-            url = kook_url
-        elif name == "QQ音乐" and qq_music_url:
-            url = qq_music_url
-        elif name == "UU加速器" and uu_url:
-            url = uu_url
-        elif name == "火绒安全" and huorong_url:
+        if name == "火绒安全" and huorong_url:
             url = huorong_url
 
         if not name or not url:
@@ -1126,9 +959,6 @@ def load_apps() -> list[AppItem]:
                 install_command=str(raw.get("install-command", "")).strip(),
                 note=str(raw.get("note", "")).strip(),
                 portable=as_bool(raw.get("portable", False)),
-                is_api=as_bool(raw.get("is_api", False)),
-                is_html_parse=as_bool(raw.get("is_html_parse", False)),
-                is_js_parse=as_bool(raw.get("is_js_parse", False)),
             )
         )
     return apps

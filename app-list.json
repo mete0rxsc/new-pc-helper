@@ -31,9 +31,10 @@
     },
     {
         "name": "Kook",
-        "URL": "https://dl.kookapp.cn/assets/release/html_pc/kook_2779/Kook_PC_Setup_v0.107.1.0_b2ZmaWNpYWwuc2l0ZS4uLi5wYw==.exe?auth_key=1781539821-e065ce4ab2fa51b70134c39c36f41789-10h3n8uz0-24f87bc2fcdbf543d29225db2169aa75",
+        "URL": "https://www.kookapp.cn/api/v2/updates/latest-version?platform=windows&source=1",
         "unzip": false,
-        "install-command": "/S"
+        "install-command": "/S",
+        "is_api": true
     },
     {
         "name": "GeekUninstaller",
@@ -54,9 +55,10 @@
     },
     {
         "name": "QQ音乐",
-        "URL": "https://dldir.y.qq.com/ecosfile/music_clntupate/pc/other/QQMusic_Setup_2228.exe?sign=1781539964-61v9Oqgv0rsi5oUj-0-ae50a6579abd3cfe95b41f7c127da61a",
+        "URL": "https://y.qq.com/download/",
         "unzip": false,
-        "install-command": "/S"
+        "install-command": "/S",
+        "is_html_parse": true
     },
     {
         "name": "网易云音乐",
@@ -78,9 +80,10 @@
     },
     {
         "name": "UU加速器",
-        "URL": "https://uu.gdl.netease.com/5223/UU-6.9.2.exe?key1=32ff19b0a85e8a7346e7073cbbfee28d&key2=6a30cda1",
+        "URL": "https://adl.netease.com/d/g/uu/c/gw/js",
         "unzip": false,
-        "install-command": "/S"
+        "install-command": "/S",
+        "is_js_parse": true
     },
     {
         "name": "QQ",
